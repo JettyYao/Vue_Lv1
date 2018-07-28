@@ -39,6 +39,8 @@ export default {
     }
   },
   data () {
+    return {
+    }
   }
 }
 </script>
@@ -64,6 +66,16 @@ export default {
   margin-bottom: 0;
 }
 .dialog-center .el-dialog__body{
-  padding: 15px 20px 30px 40px;
+  padding: 15px 20px 30px 30px;
+}
+.el-dialog__header{
+  min-height: 34px;
+  padding: 20px 30px 5px;
+}
+.dialog-center .el-scrollbar__view{
+  padding-right: 10px;
+}
+.dialog-center .el-menu-item:focus,.dialog-center .el-menu-item:hover,.dialog-center .el-submenu__title:hover{
+  background-color: transparent;
 }
 </style>
