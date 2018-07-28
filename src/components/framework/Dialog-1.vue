@@ -59,8 +59,8 @@ export default {
   height: calc(100% - 48px);
 }
 .dialog-center{
-  top: 50%;
-  transform: translateY(-50%);
+  top: 54%;
+  transform: translate(0,-54%);
   margin-bottom: 0;
 }
 .dialog-center .el-dialog__body{

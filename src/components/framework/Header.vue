@@ -9,7 +9,7 @@
     <el-col :span="12">
       <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" @click="dialogNewsVisible = true">NEWS</el-menu-item>
-        <el-menu-item index="2">BOTHS</el-menu-item>
+        <el-menu-item index="2" @click="dialogPostVisible = true">BOTHS</el-menu-item>
         <el-menu-item index="3" @click="dialogAboutVisible = true">ABOUT</el-menu-item>
         <el-menu-item index="4"><a href="#" target="_blank">登陆</a></el-menu-item>
         <el-menu-item index="5"><a href="#" target="_blank">注册</a></el-menu-item>
@@ -19,19 +19,22 @@
   <div class="dialog-area">
     <Dialog1 :dialogNewsVisible.sync="dialogNewsVisible"></Dialog1>
     <Dialog2 :dialogAboutVisible.sync="dialogAboutVisible"></Dialog2>
+    <Dialog3 :dialogPostVisible.sync="dialogPostVisible"></Dialog3>
   </div>
 </el-header>
 </template>
 <script>
 import Dialog1 from './Dialog-1'
 import Dialog2 from './Dialog-2'
+import Dialog3 from './Dialog-3'
 export default {
-  components: {Dialog1, Dialog2},
+  components: {Dialog1, Dialog2, Dialog3},
   name: 'MainHeader',
   data () {
     return {
       dialogNewsVisible: false,
-      dialogAboutVisible: false
+      dialogAboutVisible: false,
+      dialogPostVisible: false
     }
   }
 }
