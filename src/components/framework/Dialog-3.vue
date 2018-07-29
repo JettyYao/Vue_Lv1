@@ -117,5 +117,6 @@ export default {
 }
 .dialog-post .el-scrollbar__wrap{
   padding-right: 17px;
+  margin-right: -18px !important;
 }
 </style>
