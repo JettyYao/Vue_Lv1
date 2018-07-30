@@ -11,8 +11,8 @@
         <el-menu-item index="1" @click="dialogNewsVisible = true">NEWS</el-menu-item>
         <el-menu-item index="2" @click="dialogPostVisible = true">BOTHS</el-menu-item>
         <el-menu-item index="3" @click="dialogAboutVisible = true">ABOUT</el-menu-item>
-        <el-menu-item index="4"><a href="#" target="_blank">登陆</a></el-menu-item>
-        <el-menu-item index="5"><a href="#" target="_blank">注册</a></el-menu-item>
+        <el-menu-item index="4" >登陆</el-menu-item>
+        <el-menu-item index="5" @click="dialogSignVisible = true">注册</el-menu-item>
       </el-menu>
     </el-col>
   </el-row>
@@ -20,6 +20,7 @@
     <Dialog1 :dialogNewsVisible.sync="dialogNewsVisible"></Dialog1>
     <Dialog2 :dialogAboutVisible.sync="dialogAboutVisible"></Dialog2>
     <Dialog3 :dialogPostVisible.sync="dialogPostVisible"></Dialog3>
+    <Dialog4 :dialogSignVisible.sync="dialogSignVisible"></Dialog4>
   </div>
 </el-header>
 </template>
@@ -27,14 +28,16 @@
 import Dialog1 from './Dialog-1'
 import Dialog2 from './Dialog-2'
 import Dialog3 from './Dialog-3'
+import Dialog4 from './Dialog-4'
 export default {
-  components: {Dialog1, Dialog2, Dialog3},
+  components: {Dialog1, Dialog2, Dialog3, Dialog4},
   name: 'MainHeader',
   data () {
     return {
       dialogNewsVisible: false,
       dialogAboutVisible: false,
-      dialogPostVisible: false
+      dialogPostVisible: false,
+      dialogSignVisible: false
     }
   }
 }

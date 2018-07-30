@@ -6,7 +6,8 @@
         <el-scrollbar style="height: 100%">
           <el-menu
             default-active=1
-            class="el-menu-vertical-demo">
+            class="el-menu-vertical-demo"
+            :default-openeds="opened">
             <el-menu-item index="1">
               <i class="el-icon-menu"></i>
               <span slot="title">导航二</span>
@@ -88,6 +89,7 @@ export default {
   },
   data () {
     return {
+      opened: ['2']
     }
   }
 }

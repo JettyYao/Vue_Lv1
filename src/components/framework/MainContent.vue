@@ -138,6 +138,7 @@ export default {
   color: #fff;
   background-color: #e9573f;
   outline: 0;
+  border-color: #fff;
 }
 </style>
 <style>
