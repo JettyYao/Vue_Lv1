@@ -1,71 +1,63 @@
 <template>
-<div class="maincontent">
-  <div class="background"></div>
-  <div class="topic">
-    <el-row>
-      <el-col :span="12" :offset="6">
-        <h2 class="topicWord">寻找、阅读以及学习<br><span>Your Want</span></h2>
-      </el-col>
-    </el-row>
-  </div>
-  <div class="search-wrap" style="padding: 0 0 10px;">
-    <form action="">
-      <el-row>
-        <el-col :span="14" :offset="5">
-          <el-autocomplete
-            popper-class="my-autocomplete"
-            v-model="state3"
-            :fetch-suggestions="querySearch"
-            placeholder="Search Posts"
-            @select="handleSelect">
-            <i class="el-icon-search el-input__icon"
-              slot="suffix"
-              @click="handleIconClick">
-            </i>
-            <template slot-scope="{ item }">
-              <div class="name">{{ item.value }}</div>
-              <span class="addr">{{ item.address }}</span>
-            </template>
-          </el-autocomplete>
-        </el-col>
-      </el-row>
-    </form>
-  </div>
-  <div class="routingJump" style="padding: 0 0 20px;">
-    <p style="text-align: center">
-      <a href="#" style="color: #fff;">Forget Something? Click Here <i class="el-icon-caret-right"></i></a>
-    </p>
-  </div>
-  <div class="other" style="padding: 25px 0 130px;">
-    <el-row>
-      <el-col :span="8" :offset="8">
-        <el-row>
-          <el-col :span="12" style="text-align: center;color: #fff;border-right: 1px solid #aaa;">
-            <h2 class="visitor">23,254,265,26</h2>
-            <p style="font-size: 12px;padding:5px 0 0;">总访问人次</p>
-          </el-col>
-          <el-col :span="12" style="text-align: center;">
-            <el-button @click="dialogMessageVisible = true">
-              Send Email <i class="el-icon-message" style="padding: 0 5px 0 25px;font-weight: bold;"></i>
-            </el-button>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-  </div>
-  <div class="dialog-area">
-    <Dialog4 :dialogMessageVisible.sync="dialogMessageVisible"></Dialog4>
-  </div>
-</div>
+<el-scrollbar class="scrollbar">
+    <main-header class="post-header"></main-header>
+    <div class="maincontent">
+        <div class="background"></div>
+        <div class="topic">
+            <el-row>
+            <el-col :span="12" :offset="6">
+                <h2 class="topicWord">寻找、阅读以及学习<br><span>Your Want</span></h2>
+            </el-col>
+            </el-row>
+        </div>
+        <div class="search-wrap" style="padding: 0 0 10px;">
+            <form action="">
+            <el-row>
+                <el-col :span="14" :offset="5">
+                <el-autocomplete
+                    popper-class="my-autocomplete"
+                    v-model="state3"
+                    :fetch-suggestions="querySearch"
+                    placeholder="Search Topic"
+                    @select="handleSelect">
+                    <i class="el-icon-search el-input__icon"
+                    slot="suffix"
+                    @click="handleIconClick">
+                    </i>
+                    <template slot-scope="{ item }">
+                    <div class="name">{{ item.value }}</div>
+                    <span class="addr">{{ item.address }}</span>
+                    </template>
+                </el-autocomplete>
+                </el-col>
+            </el-row>
+            </form>
+        </div>
+        <div class="routingJump" style="padding: 0 0 20px;">
+            <p style="text-align: center">
+            <a href="#" style="color: #fff;">Forget Something? Look Below <i class="el-icon-caret-bottom"></i></a>
+            </p>
+        </div>
+        <div class="other" style="padding: 25px 0 130px;">
+            <el-row>
+            <el-col :span="14" :offset="5">
+              <el-row>
+              </el-row>
+            </el-col>
+            </el-row>
+        </div>
+    </div>
+    <main-footer></main-footer>
+</el-scrollbar>
 </template>
 <script>
-import Dialog4 from './Dialog-4'
+import MainHeader from '../components/framework/Header'
+import MainFooter from '../components/framework/MainFooter'
 export default {
-  components: {Dialog4},
-  name: 'MainContent',
+  components: {MainHeader, MainFooter},
+  name: 'PostPage',
   data () {
     return {
-      dialogMessageVisible: false,
       restaurants: [],
       state3: ''
     }
@@ -103,6 +95,9 @@ export default {
 }
 </script>
 <style scoped>
+.scrollbar{
+  height: 100vh;
+}
 .maincontent{
   width: 100%;
   background-color: #e9573f;
@@ -112,7 +107,7 @@ export default {
   position: absolute;
   height: 100%;
   width: 100%;
-  background-image: url(../../assets/svg/home.svg);
+  background-image: url(../assets/svg/home.svg);
   background-position: center bottom;
   background-repeat: no-repeat;
   opacity: .2;
@@ -148,6 +143,19 @@ export default {
 }
 </style>
 <style>
+.el-scrollbar__wrap{
+  overflow-x: hidden;
+}
+.el-scrollbar__thumb{
+  background-color: rgba(190,190,190,.4);
+}
+.el-scrollbar__bar{
+  right: 5px;
+  bottom: 5px;
+}
+.el-scrollbar__bar.is-vertical{
+  top: 5px;
+}
 .el-autocomplete .el-input__inner{
   height: 45px;
   line-height: 45px;

@@ -70,7 +70,10 @@ export default {
 }
 .el-dialog__header{
   min-height: 34px;
-  padding: 20px 30px 5px;
+  padding: 25px 30px 5px;
+}
+.el-dialog__headerbtn{
+  top: 25px;
 }
 .dialog-center .el-scrollbar__view{
   padding-right: 10px;

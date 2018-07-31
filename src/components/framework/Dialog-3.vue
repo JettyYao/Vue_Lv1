@@ -1,95 +1,60 @@
 <template>
-  <el-dialog :visible.sync="dialogPostVisible" @close="$emit('update:dialogPostVisible', false)" custom-class="dialog-center dialog-post" width="96%" top="0" :fullscreen="true">
-    <!-- <span slot="title" class="dialog-title"><font-awesome-icon icon="cube"/> Post By StorageBox</span> -->
-    <el-container style="height:100%">
-      <el-aside>
-        <el-scrollbar style="height: 100%">
-          <el-menu
-            default-active=1
-            class="el-menu-vertical-demo"
-            :default-openeds="opened">
-            <el-menu-item index="1">
-              <i class="el-icon-menu"></i>
-              <span slot="title">导航二</span>
-            </el-menu-item>
-            <el-submenu index="2">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>导航一</span>
-              </template>
-              <el-menu-item-group>
-                <template slot="title">分组一</template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group title="分组2">
-                <el-menu-item index="2-3">选项3</el-menu-item>
-              </el-menu-item-group>
-              <el-submenu index="2-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="2-4-1">选项1</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-            <el-submenu index="3">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>导航一</span>
-              </template>
-              <el-menu-item-group>
-                <template slot="title">分组一</template>
-                <el-menu-item index="3-1">选项1</el-menu-item>
-                <el-menu-item index="3-2">选项2</el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group title="分组2">
-                <el-menu-item index="3-3">选项3</el-menu-item>
-              </el-menu-item-group>
-              <el-submenu index="3-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="3-4-1">选项1</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-          </el-menu>
-        </el-scrollbar>
-      </el-aside>
-      <el-main>
-        <el-scrollbar style="height:100%">
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos ipsa aut, saepe ut deleniti itaque quis, cum nemo officiis vero iure officia nulla, aliquid libero corporis dicta nesciunt repudiandae illum!</p>
-        </el-scrollbar>
-      </el-main>
-    </el-container>
-    <!-- <el-scrollbar style="height: 100%"></el-scrollbar> -->
+  <el-dialog :visible.sync="dialogSignVisible" @close="$emit('update:dialogSignVisible', false)" custom-class="dialog-center dialog-login" width="40%" top="0" >
+    <span slot="title" class="dialog-title">
+        <font-awesome-icon icon="cube"/>
+        <h3 class="login-title">Welcome to StorageBox</h3>
+    </span>
+    <el-form :model="ruleForm2" label-width="100px" label-position="top">
+        <el-form-item label="名称: NetName">
+            <el-input v-model="ruleForm2.name"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱: Email">
+            <el-input v-model="ruleForm2.email" ></el-input>
+        </el-form-item>
+        <el-form-item label="密码: Password">
+            <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码: Password Comfirmation">
+            <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item style="text-align:center;padding-top: 10px;">
+            <el-button type="primary" @click="submitForm('ruleForm2')" class="button_me"><font-awesome-icon icon="cube"/> 快速注册</el-button>
+            <el-button @click="resetForm()">重置</el-button>
+        </el-form-item>
+    </el-form>
   </el-dialog>
 </template>
 <script>
 export default {
   name: 'Dialog3',
   props: {
-    dialogPostVisible: {
+    dialogSignVisible: {
       type: Boolean
     }
   },
   data () {
     return {
-      opened: ['2']
+      ruleForm2: {
+        name: '',
+        email: '',
+        pass: '',
+        checkPass: ''
+      }
+    }
+  },
+  methods: {
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm () {
+      this.ruleForm2 = {}
     }
   }
 }
@@ -98,27 +63,48 @@ export default {
 .dialog-title{
   color: #e9573f;
   font-weight: 500;
+  margin: 0 auto;
 }
 .dialog-title svg{
-  margin: 0 8px;
+  margin-right: 8px;
+  font-size: 50px;
 }
-.el-menu{
-  border-color: rgba(230,230,230,.6);
-  padding-right: 15px;
+.dialog-login .el-form{
+    width: 80%;
+    margin: 0 auto;
+}
+.login-title{
+    padding: 10px 0;
+    text-transform: uppercase;
 }
 </style>
 <style>
-.el-dialog.is-fullscreen{
-  height: 96%;
+.dialog-login .el-dialog__header{
+    text-align: center;
 }
-.el-menu-item.is-active{
-  color: #e9573f;
+.dialog-login{
+    overflow: hidden !important;
 }
-.dialog-post .el-main{
-  padding: 0 20px;
+.dialog-login .el-dialog__body{
+    padding-left: 20px;
 }
-.dialog-post .el-scrollbar__wrap{
-  padding-right: 17px;
-  margin-right: -18px !important;
+.dialog-login .el-form--label-top .el-form-item__label{
+    padding-bottom: 0;
+    line-height: 28px;
+}
+.dialog-login .el-form-item--small.el-form-item{
+    margin-bottom: 10px;
+}
+.dialog-login .el-input.is-active .el-input__inner, .dialog-login .el-input__inner:focus,.el-textarea__inner:focus{
+    border-color: #e9573f;
+}
+.el-button:focus, .el-button:hover{
+    background-color: #fff;
+    color: #e9573f;
+    border-color: #e9573f;
+}
+.button_me,.button_me:focus, .button_me:hover{
+    background-color: #e9573f;
+    border-color: #e9573f;
 }
 </style>

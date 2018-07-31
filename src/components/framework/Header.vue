@@ -3,15 +3,15 @@
   <el-row>
     <el-col :span="12">
       <div class="logo">
-        <h1><a href="/"><font-awesome-icon icon="cube" class="header-icon" /></a></h1>
+        <h1><router-link to="/"><font-awesome-icon icon="cube" class="header-icon" /></router-link></h1>
       </div>
     </el-col>
     <el-col :span="12">
       <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" @click="dialogNewsVisible = true">NEWS</el-menu-item>
-        <el-menu-item index="2" @click="dialogPostVisible = true">BOTHS</el-menu-item>
+        <el-menu-item index="2">BOTHS</el-menu-item>
         <el-menu-item index="3" @click="dialogAboutVisible = true">ABOUT</el-menu-item>
-        <el-menu-item index="4" >登陆</el-menu-item>
+        <el-menu-item index="4" ><router-link to="/Login">登陆</router-link></el-menu-item>
         <el-menu-item index="5" @click="dialogSignVisible = true">注册</el-menu-item>
       </el-menu>
     </el-col>
@@ -19,8 +19,7 @@
   <div class="dialog-area">
     <Dialog1 :dialogNewsVisible.sync="dialogNewsVisible"></Dialog1>
     <Dialog2 :dialogAboutVisible.sync="dialogAboutVisible"></Dialog2>
-    <Dialog3 :dialogPostVisible.sync="dialogPostVisible"></Dialog3>
-    <Dialog4 :dialogSignVisible.sync="dialogSignVisible"></Dialog4>
+    <Dialog3 :dialogSignVisible.sync="dialogSignVisible"></Dialog3>
   </div>
 </el-header>
 </template>
@@ -28,15 +27,13 @@
 import Dialog1 from './Dialog-1'
 import Dialog2 from './Dialog-2'
 import Dialog3 from './Dialog-3'
-import Dialog4 from './Dialog-4'
 export default {
-  components: {Dialog1, Dialog2, Dialog3, Dialog4},
+  components: {Dialog1, Dialog2, Dialog3},
   name: 'MainHeader',
   data () {
     return {
       dialogNewsVisible: false,
       dialogAboutVisible: false,
-      dialogPostVisible: false,
       dialogSignVisible: false
     }
   }
@@ -64,16 +61,18 @@ export default {
   border-top: 5px solid transparent;
   border-bottom: 0 !important;
   font-size: 15px;
-  color: #fff !important;
+  color: #fff;
   background-color: transparent !important;
   padding: 0 2px;
   margin: 0 20px;
   font-weight: 600;
 }
 .el-menu--horizontal>li.el-menu-item.is-active{
+  color: #fff;
   border-top: 5px solid transparent !important;
 }
 .el-menu--horizontal>li.el-menu-item:hover{
+  color: #fff;
   border-top: 5px solid #fff !important;
 }
 </style>
