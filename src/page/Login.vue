@@ -60,7 +60,7 @@ export default {
 <style scoped>
 .LoginPage{
     height: 100vh;
-    background-color: #e9573e;
+    background-color: #3c96f3;
     position: relative;
     overflow: hidden;
 }
@@ -79,11 +79,16 @@ a{
 }
 .background p{
     font-size: 20px;
-    height: 32px;
+    height: 30px;
     overflow: hidden;
     padding-top: 5px;
     animation: fade-in 1s ease-in;
     animation-fill-mode: forwards;
+}
+.background p strong{
+    color: #3c96f3;
+    background-color: #fff;
+    padding: 0 2px;
 }
 .background a{
     display: inline-block;
@@ -112,7 +117,7 @@ a{
     position: absolute;
     width: 100%;
     height: 100%;
-    background: url('../assets/svg/bgi-write.svg') no-repeat center;
+    background: url('../assets/svg/streetsign.svg') no-repeat center;
     opacity: .4;
     background-size: cover;
 }
@@ -150,22 +155,22 @@ a{
 }
 .el-button:focus, .el-button:hover{
     background-color: #fff;
-    color: #e9573f;
-    border-color: #e9573f;
+    color: #3c96f3;
+    border-color: #3c96f3;
 }
 .button_me,.button_me:focus, .button_me:hover{
-    background-color: #e9573f;
-    border-color: #e9573f;
+    background-color: #3c96f3;
+    border-color: #3c96f3;
 }
 .LoginPage .el-form-item--small.el-form-item{
     margin-bottom: 10px;
 }
 .LoginPage .el-input.is-active .el-input__inner, .LoginPage .el-input__inner:focus,.el-textarea__inner:focus{
-    border-color: #e9573f;
+    border-color: #3c96f3;
 }
 .el-button:focus, .el-button:hover{
     background-color: #fff;
-    color: #e9573f;
-    border-color: #e9573f;
+    color: #3c96f3;
+    border-color: #3c96f3;
 }
 </style>

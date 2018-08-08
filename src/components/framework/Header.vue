@@ -1,5 +1,5 @@
 <template>
-<el-header style="padding: 2px 113px; background-color: #e9573f">
+<el-header style="padding: 2px 113px; background-color: #3c96f3">
   <el-row>
     <el-col :span="12">
       <div class="logo">
@@ -9,7 +9,7 @@
     <el-col :span="12">
       <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1" @click="dialogNewsVisible = true">NEWS</el-menu-item>
-        <el-menu-item index="2">BOTHS</el-menu-item>
+        <el-menu-item index="2"><router-link to="/Post">BOTHS</router-link></el-menu-item>
         <el-menu-item index="3" @click="dialogAboutVisible = true">ABOUT</el-menu-item>
         <el-menu-item index="4" ><router-link to="/Login">登陆</router-link></el-menu-item>
         <el-menu-item index="5" @click="dialogSignVisible = true">注册</el-menu-item>
@@ -44,6 +44,10 @@ export default {
   border-bottom: none;
   background-color: transparent !important;
 }
+.el-header .el-menu--horizontal>.el-menu-item{
+    height: 70px;
+    line-height: 70px;
+}
 .logo{
   line-height: 70px;
   color: #fff;
@@ -60,7 +64,7 @@ export default {
 .el-menu-item{
   border-top: 5px solid transparent;
   border-bottom: 0 !important;
-  font-size: 15px;
+  font-size: 16px;
   color: #fff;
   background-color: transparent !important;
   padding: 0 2px;

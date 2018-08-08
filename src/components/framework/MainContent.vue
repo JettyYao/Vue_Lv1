@@ -31,9 +31,9 @@
       </el-row>
     </form>
   </div>
-  <div class="routingJump" style="padding: 0 0 20px;">
+  <div class="RouteJump">
     <p style="text-align: center">
-      <a href="#" style="color: #fff;">Forget Something? Click Here <i class="el-icon-caret-right"></i></a>
+      <router-link to="/Post" style="color: #fff">Forget Something? Click Here <i class="el-icon-caret-right"></i></router-link>
     </p>
   </div>
   <div class="other" style="padding: 25px 0 130px;">
@@ -105,15 +105,16 @@ export default {
 <style scoped>
 .maincontent{
   width: 100%;
-  background-color: #e9573f;
+  background-color: #3c96f3;
   position: relative;
 }
 .background{
   position: absolute;
   height: 100%;
   width: 100%;
-  background-image: url(../../assets/svg/home.svg);
-  background-position: center bottom;
+  background-image: url(../../assets/svg/streetsign.svg);
+  background-size: cover;
+  background-position: center 14%;
   background-repeat: no-repeat;
   opacity: .2;
 }
@@ -138,13 +139,20 @@ export default {
   font-size: 18px;
   border-radius: 24.5px;
   padding: 14px 25px;
-  color: #e9573f;
+  color: #3c96f3;
 }
 .el-button:focus, .el-button:hover, .el-button:active{
   color: #fff;
-  background-color: #e9573f;
+  background-color: #3c96f3;
   outline: 0;
   border-color: #fff;
+}
+.RouteJump{
+  padding: 0 0 20px;
+  position: relative;
+}
+.RouteJump a:hover{
+  text-decoration: underline;
 }
 </style>
 <style>
@@ -157,6 +165,6 @@ export default {
 .el-input__suffix{
   right: 15px;
   cursor: pointer;
-  color: #e9573f;
+  color: #3c96f3;
 }
 </style>

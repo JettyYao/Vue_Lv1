@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HomePage from '@/page/HomePage'
 import Login from '@/page/Login'
 import Post from '@/page/Post'
+import Admin from '@/page/Admin'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/Post',
       name: 'Post',
       component: Post
+    },
+    {
+      path: '/Admin',
+      name: 'AdminControll',
+      component: Admin
     }
   ]
 })

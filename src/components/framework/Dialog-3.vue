@@ -61,7 +61,7 @@ export default {
 </script>
 <style scoped>
 .dialog-title{
-  color: #e9573f;
+  color: #3c96f3;
   font-weight: 500;
   margin: 0 auto;
 }
@@ -79,6 +79,9 @@ export default {
 }
 </style>
 <style>
+.dialog-center .el-form-item__label{
+    font-size: 16px;
+}
 .dialog-login .el-dialog__header{
     text-align: center;
 }
@@ -96,15 +99,15 @@ export default {
     margin-bottom: 10px;
 }
 .dialog-login .el-input.is-active .el-input__inner, .dialog-login .el-input__inner:focus,.el-textarea__inner:focus{
-    border-color: #e9573f;
+    border-color:#3c96f3;
 }
 .el-button:focus, .el-button:hover{
     background-color: #fff;
-    color: #e9573f;
-    border-color: #e9573f;
+    color: #3c96f3;
+    border-color: #3c96f3;
 }
 .button_me,.button_me:focus, .button_me:hover{
-    background-color: #e9573f;
-    border-color: #e9573f;
+    background-color: #3c96f3;
+    border-color: #3c96f3;
 }
 </style>

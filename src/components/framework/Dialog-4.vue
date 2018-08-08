@@ -65,7 +65,7 @@ export default {
 </script>
 <style scoped>
 .dialog-title{
-  color: #e9573f;
+  color: #3c96f3;
   font-weight: 500;
   margin: 0 auto;
 }

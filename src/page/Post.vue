@@ -6,7 +6,7 @@
         <div class="topic">
             <el-row>
             <el-col :span="12" :offset="6">
-                <h2 class="topicWord">寻找、阅读以及学习<br><span>Your Want</span></h2>
+                <h2 class="topicWord">寻找、阅读以及学习<br><span>Your Languages</span></h2>
             </el-col>
             </el-row>
         </div>
@@ -14,50 +14,89 @@
             <form action="">
             <el-row>
                 <el-col :span="14" :offset="5">
-                <el-autocomplete
-                    popper-class="my-autocomplete"
-                    v-model="state3"
-                    :fetch-suggestions="querySearch"
-                    placeholder="Search Topic"
-                    @select="handleSelect">
-                    <i class="el-icon-search el-input__icon"
-                    slot="suffix"
-                    @click="handleIconClick">
-                    </i>
-                    <template slot-scope="{ item }">
-                    <div class="name">{{ item.value }}</div>
-                    <span class="addr">{{ item.address }}</span>
-                    </template>
-                </el-autocomplete>
-                </el-col>
-            </el-row>
-            </form>
-        </div>
-        <div class="routingJump" style="padding: 0 0 20px;">
-            <p style="text-align: center">
-            <a href="#" style="color: #fff;">Forget Something? Look Below <i class="el-icon-caret-bottom"></i></a>
-            </p>
-        </div>
-        <div class="other" style="padding: 25px 0 130px;">
-            <el-row>
-            <el-col :span="14" :offset="5">
+                  <el-autocomplete
+                      popper-class="my-autocomplete"
+                      v-model="state3"
+                      :fetch-suggestions="querySearch"
+                      placeholder="Search Topic at Here"
+                      @select="handleSelect">
+                      <i class="el-icon-search el-input__icon"
+                      slot="suffix"
+                      @click="handleIconClick">
+                      </i>
+                      <template slot-scope="{ item }">
+                      <div class="name">{{ item.value }}</div>
+                      <span class="addr">{{ item.address }}</span>
+                      </template>
+                  </el-autocomplete>
+                  </el-col>
+              </el-row>
+              </form>
+          </div>
+          <div class="routingJump" style="padding: 0 0 20px;">
+              <p style="text-align: center">
+              <a href="#" style="color: #fff;">Forget Something? Look Below <i class="el-icon-caret-bottom"></i></a>
+              </p>
+          </div>
+          <div class="post_topic" style="padding: 25px 0 130px;">
               <el-row>
+              <el-col :span="14" :offset="5">
+              <el-row style="padding:0 20px;">
+                <el-col :span="4">
+                  <div class="topic-icon" @click="dialogPostVisible = true">
+                    <img src="../assets/svg/html.svg" alt="" class="svg_c">
+                    <p>HTML</p>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div class="topic-icon" @click="dialogPostVisible = true">
+                    <img src="../assets/svg/ruby1.svg" alt="" class="svg_c">
+                    <p>Ruby</p>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div class="topic-icon" @click="dialogPostVisible = true">
+                    <img src="../assets/svg/social-javascript.svg" alt="" class="svg_c">
+                    <p>Javascript</p>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div class="topic-icon" @click="dialogPostVisible = true">
+                    <img src="../assets/svg/vuejs1.svg" alt="" class="svg_c">
+                    <p>Vue.Js</p>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div class="topic-icon" @click="dialogPostVisible = true">
+                    <img src="../assets/svg/nodejs1.svg" alt="" class="svg_c">
+                    <p>Other</p>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div class="topic-icon" @click="dialogPostVisible = true">
+                    <img src="../assets/svg/configure.svg" alt="" class="svg_c">
+                    <p>Config</p>
+                  </div>
+                </el-col>
               </el-row>
             </el-col>
             </el-row>
         </div>
     </div>
     <main-footer></main-footer>
+    <dialog5 :dialogPostVisible.sync="dialogPostVisible"></dialog5>
 </el-scrollbar>
 </template>
 <script>
 import MainHeader from '../components/framework/Header'
 import MainFooter from '../components/framework/MainFooter'
+import Dialog5 from '../components/framework/Dialog-5'
 export default {
-  components: {MainHeader, MainFooter},
+  components: {MainHeader, MainFooter, Dialog5},
   name: 'PostPage',
   data () {
     return {
+      dialogPostVisible: false,
       restaurants: [],
       state3: ''
     }
@@ -100,15 +139,16 @@ export default {
 }
 .maincontent{
   width: 100%;
-  background-color: #e9573f;
+  background-color: #3c96f3;
   position: relative;
 }
 .background{
   position: absolute;
   height: 100%;
   width: 100%;
-  background-image: url(../assets/svg/home.svg);
-  background-position: center bottom;
+  background-image: url(../assets/svg/streetsign.svg);
+  background-size: cover;
+  background-position: center 14%;
   background-repeat: no-repeat;
   opacity: .2;
 }
@@ -133,13 +173,36 @@ export default {
   font-size: 18px;
   border-radius: 24.5px;
   padding: 14px 25px;
-  color: #e9573f;
+  color: #3c96f3;
 }
 .el-button:focus, .el-button:hover, .el-button:active{
   color: #fff;
-  background-color: #e9573f;
+  background-color: #3c96f3;
   outline: 0;
   border-color: #fff;
+}
+.post_topic p{
+  padding: 5px 0;
+  line-height: 1.4;
+}
+.post_topic div.topic-icon{
+  margin: 0 auto;
+  text-align: center;
+  cursor: pointer;
+}
+.post_topic div.topic-icon img{
+  width: 60px;
+  min-height: 60px;
+}
+.post_topic div.topic-icon img.svg_c{
+  width: 45px;
+}
+.post_topic div.topic-icon p{
+  color: #fff;
+  text-transform: uppercase;
+}
+.post_topic div.topic-icon:hover{
+  background-color: #909399;
 }
 </style>
 <style>
@@ -165,6 +228,6 @@ export default {
 .el-input__suffix{
   right: 15px;
   cursor: pointer;
-  color: #e9573f;
+  color: #3c96f3;
 }
 </style>
