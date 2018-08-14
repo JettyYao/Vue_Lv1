@@ -3,7 +3,7 @@
   <el-row>
     <el-col :span="12">
       <div class="logo">
-        <h1><router-link to="/"><font-awesome-icon icon="cube" class="header-icon" /></router-link></h1>
+        <h1><router-link to="/"><i class="fas fa-cube header-icon" /></router-link></h1>
       </div>
     </el-col>
     <el-col :span="12">
@@ -54,7 +54,7 @@ export default {
   padding: 0 25px;
   border-top: 5px solid transparent;
 }
-.logo svg{
+.logo i{
   color: #fff;
   font-size: 40px;
 }

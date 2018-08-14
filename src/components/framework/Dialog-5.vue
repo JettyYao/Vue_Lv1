@@ -3,7 +3,7 @@
       <el-row :gutter="25">
           <div class="left-list"  @click="isCollapse == true ? isCollapse = false : isCollapse = true">
               <div>
-                  <font-awesome-icon icon="cube" class="header-icon" />
+                  <i class="fas fa-cube header-icon" />
               </div>
           </div>
           <el-col :span=6>

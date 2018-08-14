@@ -2,7 +2,7 @@
 <div class="LoginPage">
     <div class="backgroundi"></div>
     <div class="background">
-        <router-link to="/"><font-awesome-icon icon="cube" class="header-icon" /></router-link>
+        <router-link to="/"><i class="fas fa-cube header-icon" /></router-link>
         <p>收容强大, 坚持梦想 <strong>StorageBox.com</strong></p>
     </div>
     <div class="loginBox">

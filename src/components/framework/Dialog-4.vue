@@ -1,7 +1,7 @@
 <template>
   <el-dialog :visible.sync="dialogMessageVisible" @close="$emit('update:dialogMessageVisible', false)" custom-class="dialog-center dialog-login" width="40%" top="0" >
     <span slot="title" class="dialog-title">
-        <font-awesome-icon icon="cube"/>
+        <i class="fas fa-cube"/>
         <h3 class="login-title">Email to StorageBox</h3>
     </span>
     <el-form :model="ruleForm2" label-width="100px" label-position="top">
@@ -69,7 +69,7 @@ export default {
   font-weight: 500;
   margin: 0 auto;
 }
-.dialog-title svg{
+.dialog-title i.fas{
   margin-right: 8px;
   font-size: 50px;
 }

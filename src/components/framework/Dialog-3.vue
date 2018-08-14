@@ -1,7 +1,7 @@
 <template>
   <el-dialog :visible.sync="dialogSignVisible" @close="$emit('update:dialogSignVisible', false)" custom-class="dialog-center dialog-login" width="40%" top="0" >
     <span slot="title" class="dialog-title">
-        <font-awesome-icon icon="cube"/>
+        <i class="fas fa-cube" style="font-size:30px" />
         <h3 class="login-title">Welcome to StorageBox</h3>
     </span>
     <el-form :model="ruleForm2" label-width="100px" label-position="top">
@@ -18,7 +18,7 @@
             <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item style="text-align:center;padding-top: 10px;">
-            <el-button type="primary" @click="submitForm('ruleForm2')" class="button_me"><font-awesome-icon icon="cube"/> 快速注册</el-button>
+            <el-button type="primary" @click="submitForm('ruleForm2')" class="button_me"><i class="fas fa-cube"/> 快速注册</el-button>
             <el-button @click="resetForm()">重置</el-button>
         </el-form-item>
     </el-form>

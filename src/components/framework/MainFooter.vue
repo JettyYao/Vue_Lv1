@@ -2,7 +2,7 @@
   <div class="footer">
     <el-tabs type="border-card">
       <el-tab-pane>
-        <span slot="label"><font-awesome-icon icon="signature" class="footer-icon" /> WebSite Status</span>
+        <span slot="label"><i class="fas fa-signature footer-icon" /> WebSite Status</span>
         <el-row style="padding: 30px 0;" class="footerWord">
           <el-col :span="16" :offset="4">
             <p>StorageBox.com是由JETTY创设的个人站点, 里面收录了JETTY的部分学习经验以及上线部署的具体操作, 希望可以对众位爱好编程者提供些许的帮助。</p>
@@ -13,7 +13,7 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane>
-        <span slot="label"><font-awesome-icon icon="link" class="footer-icon" /> Friendly Link</span>
+        <span slot="label"><i class="fas fa-link footer-icon" /> Friendly Link</span>
         <el-row style="padding: 30px 0;" class="footerWord">
           <el-col :span="14" :offset="5">
             <el-row>

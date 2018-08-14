@@ -16,19 +16,15 @@
                         </div>
                         <div class="admin-intro">
                             <el-row>
-                                <el-col :span=4>My Introduce <br><font-awesome-icon icon="level-up-alt" class="intro-icon"/></el-col>
+                                <el-col :span=4>My Introduce <br><i class="fas fa-level-up-alt intro-icon"></i></el-col>
                                 <el-col :span=20>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Et ipsam, quod quasi eveniet molestias quis repudiandae voluptatibus temporibus esse. Sed praesentium qui aliquid corporis nemo aliquam tenetur, necessitatibus voluptate vitae?</el-col>
                             </el-row>
                         </div>
                         <div class="admin-tags">
                             <el-row>
-                                <el-col :span=4>My knowledge <br><font-awesome-icon icon="level-up-alt" class="intro-icon"/></el-col>
+                                <el-col :span=4>My knowledge <br><i class="fas fa-level-up-alt intro-icon"></i></el-col>
                                 <el-col :span=20>
-                                    <el-tag>标签一</el-tag>
-                                    <el-tag type="success">标签二</el-tag>
-                                    <el-tag type="info">标签三</el-tag>
-                                    <el-tag type="warning">标签四</el-tag>
-                                    <el-tag type="danger">标签五</el-tag>
+                                    <el-tag type="success" v-for="tag in TagList" :key="tag.index">{{tag.tag_name}}</el-tag>
                                 </el-col>
                             </el-row>
                         </div>
@@ -36,12 +32,18 @@
                             <el-row>
                                 <el-col :span=4 style="line-height: 24px;">Configuration</el-col>
                                 <el-col :span=20>
-                                    <el-button size="mini">默认按钮</el-button>
-                                    <el-button type="primary" size="mini">主要按钮</el-button>
-                                    <el-button type="success" size="mini">成功按钮</el-button>
-                                    <el-button type="info" size="mini">信息按钮</el-button>
-                                    <el-button type="warning" size="mini">警告按钮</el-button>
-                                    <el-button type="danger" size="mini">危险按钮</el-button>
+                                    <el-button type="primary" size="mini" v-for="(tag, index) in TagList" :key="index" @click="deleteTag(index)">{{tag.tag_name}}</el-button>
+                                    <el-input
+                                        v-if="inputVisible"
+                                        v-model="inputValue"
+                                        ref="saveTagInput"
+                                        size="mini"
+                                        @keyup.enter.native="handleInputConfirm"
+                                        @blur="handleInputConfirm"
+                                        class="input-new-tag"
+                                        >
+                                        </el-input>
+                                        <el-button v-else size="mini" @click="showInput" type="danger">+ New Tag</el-button>
                                 </el-col>
                             </el-row>
                         </div>
@@ -49,21 +51,55 @@
                 </el-row>
             </div>
             <div class="admin-content">
-                <el-collapse v-model="activeNames" @change="handleChange" style="padding: 0 3px 20px;">
-                    <el-collapse-item title="一致性 Consistency" name="1">
+                <el-collapse v-model="activeNames" style="padding: 0 3px 20px;"> <!-- @change="handleChange" -->
+                    <el-collapse-item title="新闻 EveryDayNews" name="1">
                         <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
                         <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
                     </el-collapse-item>
-                    <el-collapse-item title="反馈 Feedback" name="2">
-                        <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
-                        <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
+                    <el-collapse-item title="用户 EveryVisitors" name="2">
+                        <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
+                        <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
                     </el-collapse-item>
-                    <el-collapse-item title="效率 Efficiency" name="3">
+                    <el-collapse-item title="内容 PostsContent" name="3">
+                        <div v-for="(postList,index) in TagList" :key="index" style="margin-bottom: 35px">
+                            <div class="tag_show"><p>—————— <small @click="createOrUpdate(postList.id,postList.tag_name)">{{postList.tag_name}}</small> ——————</p></div>
+                            <el-table :data="postList.posts" style="width: 100%">
+                                <el-table-column label="创建日期" width="220">
+                                <template slot-scope="scope">
+                                    <i class="el-icon-time"></i>
+                                    <span style="margin-left: 10px">{{ scope.row.created_at | changeDate }}</span>
+                                </template>
+                                </el-table-column>
+                                <el-table-column label="创建作者" width="220">
+                                <template slot-scope="scope">
+                                    <el-popover trigger="hover" placement="top">
+                                    <p>编撰者: {{ scope.row.author }}</p>
+                                    <!-- <p>住址: {{ scope.row.address }}</p> -->
+                                    <div slot="reference" class="name-wrapper">
+                                        <el-tag size="medium">{{ scope.row.author }}</el-tag>
+                                    </div>
+                                    </el-popover>
+                                </template>
+                                </el-table-column>
+                                <el-table-column label="内容标题">
+                                    <template slot-scope="scope">{{ scope.row.title }}</template>
+                                </el-table-column>
+                                <el-table-column label="操作">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+                                    <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                                </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </el-collapse-item>
+                    <el-collapse-item title="邮件 VisitorEmails" name="4">
                         <div>简化流程：设计简洁直观的操作流程；</div>
                         <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
                         <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
                     </el-collapse-item>
-                    <el-collapse-item title="可控 Controllability" name="4">
+                    <el-collapse-item title="评论 EveryComment" name="5">
                         <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
                         <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
                     </el-collapse-item>
@@ -71,15 +107,102 @@
             </div>
         </el-col>
     </el-row>
+    <div class="dialog">
+         <Dialog6 :dialogPostCreate.sync="dialogPostCreate" :data="create_tag"></Dialog6>
+    </div>
   </el-scrollbar>
 </template>
 <script>
+import Dialog6 from '../components/framework/Dialog-6'
 export default {
   name: 'AdminControll',
+  components: {Dialog6},
   data () {
     return {
-      activeNames: ['1']
+      activeNames: ['1'],
+      TagList: [],
+      create_tag: [],
+      inputVisible: false,
+      inputValue: '',
+      PostList: [],
+      dialogPostCreate: false
     }
+  },
+  methods: {
+    getTag: function () {
+      this.$axios.get('/tags').then((res) => {
+        this.TagList = res.data
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    deleteTag: function (index) {
+      let deleteTagIndex = this.TagList[index].id
+      if (deleteTagIndex) {
+        this.$confirm('此操作将删除标签及其下内容, 是否继续?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'success' }).then(() => {
+          this.$message({
+            showClose: true,
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.$axios.delete('/tags/' + deleteTagIndex).then((res) => {
+            this.TagList.splice(index, 1)
+          }).catch(function (err) {
+            console.log(err)
+          })
+        }).catch(() => {
+          this.$message({
+            showClose: true,
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      } else {
+        this.$message({
+          showClose: true,
+          message: '新建项暂时无法删除，请刷新重试',
+          type: 'error'
+        })
+      }
+    },
+    showInput: function () {
+      this.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    handleInputConfirm: function () {
+      let inputValue = this.inputValue
+      if (inputValue) {
+        let params = { tag_name: inputValue, created_by: 'JETTY' }
+        this.$axios.post('/tags', params).then((res) => {
+          this.TagList.push(res.data)
+          this.$message({
+            showClose: true,
+            message: '标签创建成功!',
+            type: 'success'
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }
+      this.inputVisible = false
+      this.inputValue = ''
+    },
+    createOrUpdate: function (tagId, tagName) {
+      this.create_tag.id = tagId
+      this.create_tag.tag_name = tagName
+      this.dialogPostCreate = true
+    }
+  },
+  filters: {
+    changeDate: function (time) {
+      time = new Date(time)
+      return time.toLocaleString()
+    }
+  },
+  created () {
+    this.getTag()
   }
 }
 </script>
@@ -118,6 +241,24 @@ export default {
     padding-bottom: 30px;
     border-bottom: 2px solid rgba(0,0,0,.1);
 }
+.input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+}
+.tag_show{
+    text-align: center;
+    padding: 10px 0 15px;
+    color: #409EFF;
+    font-weight: bold;
+}
+.tag_show small{
+    padding: 0 10px;
+    cursor: pointer;
+}
+.tag_show small:hover{
+    color: #f56c6c;
+}
 </style>
 <style>
 .admin-name .el-button--small.is-circle,.admin-name .el-button:active{
@@ -141,5 +282,12 @@ export default {
 }
 .el-scrollbar__bar{
   right: 3px;
+}
+.input-new-tag.el-input--mini .el-input__inner{
+    height: 24px;
+    line-height: 24px;
+}
+.admin-tags .el-tag{
+    margin-right: 10px;
 }
 </style>
