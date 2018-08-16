@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogPostVisible" @close="$emit('update:dialogPostVisible', false);isClick=false" custom-class="dialog-center dialog-post" width="96%" top="0" :fullscreen="true">
+  <el-dialog :visible.sync="dialogPostVisible" @close="$emit('update:dialogPostVisible', false);isClick=false" custom-class="dialog-center dialog-post" top="0" :fullscreen="true">
       <el-row :gutter="25">
           <div class="left-list"  @click="isCollapse == true ? isCollapse = false : isCollapse = true">
               <div>
@@ -18,7 +18,7 @@
                         width="200"
                         trigger="hover"
                         content="点击将弹出评论区域,可发表新的评论及阅览历史评论">
-                        <font-awesome-icon icon="edit" class="comment-icon" slot="reference" @click="isComment == true ? isComment = false : isComment = true, isClick = true" />
+                        <i class="fas fa-edit comment-icon" slot="reference" @click="isComment == true ? isComment = false : isComment = true, isClick = true" />
                       </el-popover>
                       update at 2018/8/3
                    </p>
@@ -284,6 +284,7 @@ export default {
 <style>
 .dialog-post.is-fullscreen{
     height: 96%;
+    width: 96%;
     position: relative;
     overflow: hidden;
 }

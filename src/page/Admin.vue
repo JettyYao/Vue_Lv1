@@ -62,7 +62,7 @@
                     </el-collapse-item>
                     <el-collapse-item title="内容 PostsContent" name="3">
                         <div v-for="(postList,index) in TagList" :key="index" style="margin-bottom: 35px">
-                            <div class="tag_show"><p>—————— <small @click="createOrUpdate(postList.id,postList.tag_name)">{{postList.tag_name}}</small> ——————</p></div>
+                            <div class="tag_show"><p>—————— <small @click="createOrUpdate(postList.id, postList.tag_name)">{{postList.tag_name}}</small> ——————</p></div>
                             <el-table :data="postList.posts" style="width: 100%">
                                 <el-table-column label="创建日期" width="220">
                                 <template slot-scope="scope">
@@ -87,8 +87,8 @@
                                 <el-table-column label="操作">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
-                                    <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                                    <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                                    <el-button size="mini" type="primary" @click="createOrUpdate(postList.id, postList.tag_name, scope.row.id)">编辑</el-button>
+                                    <el-button size="mini" type="danger" @click="handleDelete(index, scope.$index, scope.row)">删除</el-button>
                                 </template>
                                 </el-table-column>
                             </el-table>
@@ -108,12 +108,13 @@
         </el-col>
     </el-row>
     <div class="dialog">
-         <Dialog6 :dialogPostCreate.sync="dialogPostCreate" :data="create_tag"></Dialog6>
+         <Dialog6 :dialogPostCreate.sync="dialogPostCreate" :data="create_tag" v-on:acceptData="handleNewDate" ref="updatePost"></Dialog6>
     </div>
   </el-scrollbar>
 </template>
 <script>
 import Dialog6 from '../components/framework/Dialog-6'
+// import func from './vue-temp/vue-editor-bridge';
 export default {
   name: 'AdminControll',
   components: {Dialog6},
@@ -124,7 +125,6 @@ export default {
       create_tag: [],
       inputVisible: false,
       inputValue: '',
-      PostList: [],
       dialogPostCreate: false
     }
   },
@@ -189,10 +189,51 @@ export default {
       this.inputVisible = false
       this.inputValue = ''
     },
-    createOrUpdate: function (tagId, tagName) {
+    createOrUpdate: function (tagId, tagName, postId) {
       this.create_tag.id = tagId
       this.create_tag.tag_name = tagName
+      if (postId) {
+        this.create_tag.post_id = postId
+        this.$refs.updatePost.Init()
+      }
       this.dialogPostCreate = true
+    },
+    handleNewDate: function (data) {
+      let id = data.tag_id
+      this.TagList.forEach(e => {
+        if (data.id) {
+          e.posts.forEach(p => {
+            if (p.id === data.id) {
+              let positionIndex = e.posts.indexOf(p)
+              e.posts.splice(positionIndex, 1, data)
+            }
+          })
+        } else {
+          if (e.id === id) {
+            e.posts.push(data)
+          }
+        }
+      })
+    },
+    handleDelete: function (tagIndex, postIndex, data) {
+      this.$axios.delete('/tags/' + data.tag_id + '/posts/' + data.id).then((res) => {
+        this.$confirm('此操作将永久删除该内容, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'error'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.TagList[tagIndex].posts.splice(postIndex, 1)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      })
     }
   },
   filters: {

@@ -4,6 +4,24 @@
           <i class="fas fa-edit" /> Create a new Post —— {{data.tag_name}}
       </div>
        <mavon-editor v-model="value" class="editor" :subfield=false defaultOpen="edit" placeholder="开始编辑内容, 其他内容请点击左侧弹出框..." />
+       <div :class="[ isClick ? [otherShow ? 'otherIn' : 'otherOut'] : '' , 'otherContent' ]" >
+         <div class="post_form">
+           <el-form label-position="left" label-width="80px" :model="form">
+            <el-form-item label="内容标题">
+              <el-input v-model="form.title" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="内容作者">
+              <el-input v-model="form.author" clearable></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button v-if=data.post_id type="primary" @click="UpdatePost(data.id, data.post_id)">更新内容</el-button>
+              <el-button v-else type="primary" @click="SubmitPost(data.id)">立即创建</el-button>
+              <el-button @click="ResetPost">取消</el-button>
+            </el-form-item>
+          </el-form>
+         </div>
+         <i class="fas fa-cube" @click="otherShow == true ? otherShow = false : otherShow = true; isClick = true" ></i>
+       </div>
   </el-dialog>
 </template>
 <script>
@@ -20,15 +38,117 @@ export default {
   data () {
     return {
       form: {},
-      value: ''
+      value: '',
+      otherShow: false,
+      isClick: false,
+      sendData: {}
     }
   },
   methods: {
+    Init: function () {
+      this.$axios.get('/tags/' + this.data.id + '/posts/' + this.data.post_id).then((res) => {
+        this.form = res.data
+        this.value = this.form.content
+      })
+    },
+    SubmitPost: function (tagId) {
+      this.form.content = this.value
+      let params = this.form
+      this.$axios.post('/tags/' + tagId + '/posts', params).then((res) => {
+        this.$message({
+          showClose: true,
+          message: '内容创建成功!',
+          type: 'success'
+        })
+        this.SendData(res.data[res.data.length - 1])
+        this.ResetPost()
+        this.$emit('update:dialogPostCreate', false)
+      }
+      ).catch(function (err) {
+        console.log(err)
+      })
+    },
+    UpdatePost: function (tagId, postId) {
+      this.form.content = this.value
+      let params = this.form
+      this.$axios.put('/tags/' + tagId + '/posts/' + postId, params).then((res) => {
+        this.$message({
+          showClose: true,
+          message: '内容更新成功!',
+          type: 'success'
+        })
+        this.SendData(res.data)
+        this.ResetPost()
+        this.$emit('update:dialogPostCreate', false)
+      }
+      ).catch(function (err) {
+        console.log(err)
+      })
+    },
+    ResetPost: function () {
+      this.form = {}
+      this.value = ''
+    },
+    SendData: function (send) {
+      this.$emit('acceptData', send)
+    }
   }
 }
 </script>
 <style scoped>
-
+.otherContent{
+  position: absolute;
+  z-index: 1600;
+  height: calc(100% - 55px);
+  top: 25px;
+  left: -357px;
+}
+.otherContent i{
+  display: inline-block;
+  padding: 20px 25px;
+  background-color: #409EFF;
+  color: #fff;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 1px 0 2px #909090;
+  cursor: pointer;
+  margin-top: 50%;
+  transform: translateY(-50%);
+}
+.post_form{
+  float: left;
+  background-color: #fff;
+  height: 100%;
+  padding: 0 30px;
+  box-shadow: 1px 0 2px #909090;
+}
+.post_form .el-form{
+  padding: 30px 0;
+}
+.otherIn {
+  animation: otherIn .3s linear;
+  animation-fill-mode: forwards;
+}
+.otherOut {
+  animation: otherOut .3s linear;
+  animation-fill-mode: forwards;
+}
+@keyframes otherIn {
+  0%{
+    left: -357px;
+  }
+  100%{
+    left: 0;
+  }
+}
+@keyframes otherOut {
+  0%{
+    left: 0;
+  }
+  100%{
+    left: -357px;
+  }
+}
 </style>
 <style>
 .post-create.is-fullscreen{
@@ -41,6 +161,7 @@ export default {
   height: 100% !important;
 }
 .post-create .el-dialog__body{
-  height: calc(100% - 48px)
+  height: calc(100% - 48px);
+  position: relative;
 }
 </style>
