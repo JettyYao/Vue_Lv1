@@ -86,7 +86,7 @@
                                 </el-table-column>
                                 <el-table-column label="操作">
                                 <template slot-scope="scope">
-                                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+                                    <el-button size="mini" @click="lookPost(postList.id, scope.row.title, scope.row.id, postList.tag_name)">查看</el-button>
                                     <el-button size="mini" type="primary" @click="createOrUpdate(postList.id, postList.tag_name, scope.row.id)">编辑</el-button>
                                     <el-button size="mini" type="danger" @click="handleDelete(index, scope.$index, scope.row)">删除</el-button>
                                 </template>
@@ -109,23 +109,27 @@
     </el-row>
     <div class="dialog">
          <Dialog6 :dialogPostCreate.sync="dialogPostCreate" :data="create_tag" v-on:acceptData="handleNewDate" ref="updatePost"></Dialog6>
+         <Dialog7 :dialogPostShow.sync="dialogPostShow" :data="look_post" ref="postShow"></Dialog7>
     </div>
   </el-scrollbar>
 </template>
 <script>
 import Dialog6 from '../components/framework/Dialog-6'
+import Dialog7 from '../components/framework/Dialog-7'
 // import func from './vue-temp/vue-editor-bridge';
 export default {
   name: 'AdminControll',
-  components: {Dialog6},
+  components: {Dialog6, Dialog7},
   data () {
     return {
       activeNames: ['1'],
       TagList: [],
       create_tag: [],
+      look_post: [],
       inputVisible: false,
       inputValue: '',
-      dialogPostCreate: false
+      dialogPostCreate: false,
+      dialogPostShow: false
     }
   },
   methods: {
@@ -234,6 +238,14 @@ export default {
           })
         })
       })
+    },
+    lookPost: function (tagId, title, postId, tagName) {
+      this.look_post.tag_id = tagId
+      this.look_post.title = title
+      this.look_post.postId = postId
+      this.look_post.tag_name = tagName
+      this.dialogPostShow = true
+      this.$refs.postShow.Init()
     }
   },
   filters: {

@@ -44,7 +44,7 @@
               <el-row style="padding:0 20px;">
                 <el-col :span="4">
                   <div class="topic-icon" @click="dialogPostVisible = true">
-                    <img src="../assets/svg/html.svg" alt="" class="svg_c">
+                    <img src="../assets/svg/html1.svg" alt="" class="svg_c">
                     <p>HTML</p>
                   </div>
                 </el-col>
@@ -56,7 +56,7 @@
                 </el-col>
                 <el-col :span="4">
                   <div class="topic-icon" @click="dialogPostVisible = true">
-                    <img src="../assets/svg/social-javascript.svg" alt="" class="svg_c">
+                    <img src="../assets/svg/javascript1.svg" alt="" class="svg_c">
                     <p>Javascript</p>
                   </div>
                 </el-col>
@@ -74,7 +74,7 @@
                 </el-col>
                 <el-col :span="4">
                   <div class="topic-icon" @click="dialogPostVisible = true">
-                    <img src="../assets/svg/configure.svg" alt="" class="svg_c">
+                    <img src="../assets/svg/configure1.svg" alt="" class="svg_c">
                     <p>Config</p>
                   </div>
                 </el-col>

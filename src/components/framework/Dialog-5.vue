@@ -324,4 +324,10 @@ export default {
 .dialog-post textarea{
     font-family: inherit;
 }
+.dialog-post .el-scrollbar__view{
+    padding: 20px 20px 0 0;
+}
+.dialog-post .el-scrollbar__bar.is-vertical{
+    top: 22px;
+}
 </style>
