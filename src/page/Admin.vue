@@ -129,7 +129,8 @@ export default {
       inputVisible: false,
       inputValue: '',
       dialogPostCreate: false,
-      dialogPostShow: false
+      dialogPostShow: false,
+      type: ''
     }
   },
   methods: {
@@ -194,28 +195,30 @@ export default {
       this.inputValue = ''
     },
     createOrUpdate: function (tagId, tagName, postId) {
+      this.$refs.updatePost.ResetPost()
       this.create_tag.id = tagId
       this.create_tag.tag_name = tagName
       if (postId) {
         this.create_tag.post_id = postId
         this.$refs.updatePost.Init()
+      } else {
+        this.type = 'create'
       }
       this.dialogPostCreate = true
     },
     handleNewDate: function (data) {
       let id = data.tag_id
       this.TagList.forEach(e => {
-        if (data.id) {
+        if (e.id === id && this.type === 'create') {
+          e.posts.push(data)
+          this.type = ''
+        } else {
           e.posts.forEach(p => {
             if (p.id === data.id) {
               let positionIndex = e.posts.indexOf(p)
               e.posts.splice(positionIndex, 1, data)
             }
           })
-        } else {
-          if (e.id === id) {
-            e.posts.push(data)
-          }
         }
       })
     },

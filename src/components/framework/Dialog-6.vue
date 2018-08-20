@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="dialogPostCreate" @close="$emit('update:dialogPostCreate', false)" custom-class="dialog-center post-create" top="0" :fullscreen="true">
+    <el-dialog :visible.sync="dialogPostCreate" @close="$emit('update:dialogPostCreate', false)" custom-class="dialog-center post-create" top="0" :fullscreen="true" v-loading="loading" element-loading-text="加载数据中" element-loading-background="rgba(0, 0, 0, .6)">
       <div slot="title" style="color:#909399">
           <i class="fas fa-edit" /> Create a new Post —— {{data.tag_name}}
       </div>
@@ -16,7 +16,7 @@
             <el-form-item>
               <el-button v-if=data.post_id type="primary" @click="UpdatePost(data.id, data.post_id)">更新内容</el-button>
               <el-button v-else type="primary" @click="SubmitPost(data.id)">立即创建</el-button>
-              <el-button @click="ResetPost">取消</el-button>
+              <el-button @click="ResetPost">重置</el-button>
             </el-form-item>
           </el-form>
          </div>
@@ -41,15 +41,20 @@ export default {
       value: '',
       otherShow: false,
       isClick: false,
-      sendData: {}
+      sendData: {},
+      loading: false
     }
   },
   methods: {
     Init: function () {
+      this.loading = true
       this.$axios.get('/tags/' + this.data.id + '/posts/' + this.data.post_id).then((res) => {
         this.form = res.data
         this.value = this.form.content
       })
+      setTimeout(() => {
+        this.loading = false
+      }, 500)
     },
     SubmitPost: function (tagId) {
       this.form.content = this.value
@@ -69,6 +74,7 @@ export default {
       })
     },
     UpdatePost: function (tagId, postId) {
+      this.loading = true
       this.form.content = this.value
       let params = this.form
       this.$axios.put('/tags/' + tagId + '/posts/' + postId, params).then((res) => {
@@ -84,10 +90,15 @@ export default {
       ).catch(function (err) {
         console.log(err)
       })
+      setTimeout(() => {
+        this.loading = false
+      }, 500)
     },
     ResetPost: function () {
       this.form = {}
       this.value = ''
+      this.isClick = false
+      this.otherShow = false
     },
     SendData: function (send) {
       this.$emit('acceptData', send)

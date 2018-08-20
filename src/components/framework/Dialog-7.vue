@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="dialogPostShow" @close="$emit('update:dialogPostShow', false)" custom-class="dialog-center admin-post-show" top="0" :fullscreen="true">
+    <el-dialog :visible.sync="dialogPostShow" @close="$emit('update:dialogPostShow', false)" custom-class="dialog-center admin-post-show" top="0" :fullscreen="true"  v-loading="loading" element-loading-text="加载数据中">
       <div slot="title" style="color:#909399">
           <i class="fas fa-book-open" style="color: #409EFF" /> <strong style="color: #409EFF">Look</strong> <strong>{{data.title}}</strong>
       </div>
@@ -15,26 +15,26 @@
                 <el-col :span="12">
                   <div>
                     <el-row>
-                          <el-col :span="5">内容标题：</el-col>
-                          <el-col :span="19" style="word-wrap:break-word"><p>{{postData.title}}</p></el-col>
+                          <el-col :span="4">内容标题：</el-col>
+                          <el-col :span="20" style="word-wrap:break-word"><p>{{postData.title}}</p></el-col>
                       </el-row>
                   </div>
                   <div>
                     <el-row>
-                          <el-col :span="5">内容作者：</el-col>
-                          <el-col :span="19"><p>{{postData.author}}</p></el-col>
+                          <el-col :span="4">内容作者：</el-col>
+                          <el-col :span="20"><p>{{postData.author}}</p></el-col>
                       </el-row>
                   </div>
                   <div>
                     <el-row>
-                          <el-col :span="5">创建时间：</el-col>
-                          <el-col :span="19"><p>{{postData.created_at | changeDate}}</p></el-col>
+                          <el-col :span="4">创建时间：</el-col>
+                          <el-col :span="20"><p>{{postData.created_at | changeDate}}</p></el-col>
                       </el-row>
                   </div>
                   <div>
                     <el-row>
-                          <el-col :span="5">更新时间：</el-col>
-                          <el-col :span="19"><p>{{postData.updated_at | changeDate}}</p></el-col>
+                          <el-col :span="4">更新时间：</el-col>
+                          <el-col :span="20"><p>{{postData.updated_at | changeDate}}</p></el-col>
                       </el-row>
                   </div>
                 </el-col>
@@ -47,11 +47,11 @@
                 </div>
             </el-collapse-item>
             <el-collapse-item title="游客反馈 Feedback" name="2">
-              <el-card v-for="(item,index) in postData.comments" :key="index" style="margin-bottom: 8px;">
+              <el-card v-for="(item,index) in commentData" :key="index" style="margin-bottom: 8px;">
                 <div slot="header" class="clearfix">
                   <span><strong style="color:#409EFF;padding-right: 15px;">Floor：#{{index+1}}</strong> {{item.created_at | changeDate}}</span>
                   <el-button style="float: right; padding:8px" type="danger" @click="commentDelete(item.id, index)">删除</el-button>
-                  <el-button style="float: right; padding:8px; margin-right:5px;" type="primary" @click="commentDelete(item.id, index)">回复</el-button>
+                  <el-button style="float: right; padding:8px; margin-right:5px;" type="primary" @click="CreateReply(item.id)">回复</el-button>
                 </div>
                 <el-row>
                   <el-col :span="3" style="padding: 5px 10px 5px 0;">
@@ -63,6 +63,23 @@
                     <div>
                       <p style="color:#409EFF">{{item.username}}：{{item.account}}</p>
                       <p>{{item.content}}</p>
+                    </div>
+                    <div v-for="(reply,index) in item.replies" :key="index" style="margin: 10px 0">
+                      <el-card style="margin-bottom: 8px;">
+                        <el-row>
+                          <el-col :span="3" style="padding: 5px 10px 5px 0;">
+                            <div class="img reply-button" @click="DeleteReply(reply.comment_id, reply.id, index)">
+                              <i class="fas fa-user"></i>
+                            </div>
+                          </el-col>
+                          <el-col :span="21">
+                            <div>
+                              <p style="color:#409EFF">{{reply.username}}：{{reply.account}} <span style="color: black">(At: {{reply.created_at | changeDate}})</span></p>
+                              <p>{{reply.content}}</p>
+                            </div>
+                          </el-col>
+                        </el-row>
+                      </el-card>
                     </div>
                   </el-col>
                 </el-row>
@@ -87,17 +104,32 @@ export default {
     return {
       activeNames: ['1'],
       postData: [],
-      imgAdd: ''
+      commentData: [],
+      postReply: {},
+      imgAdd: '',
+      loading: false
     }
   },
   methods: {
     Init: function () {
+      this.postData = []
+      this.loading = true
+      // get post data
       this.$axios.get('/tags/' + this.data.tag_id + '/posts/' + this.data.postId).then((res) => {
         this.postData = res.data
         this.imgAdd = require('../../assets/svg/' + this.data.tag_name.toLowerCase() + '1.svg')
       }).catch(function (err) {
         console.log(err)
       })
+      // get comment and reply data
+      this.$axios.get('/tags/' + this.data.tag_id + '/posts/' + this.data.postId + '/comments').then((res) => {
+        this.commentData = res.data
+      }).catch(function (err) {
+        console.log(err)
+      })
+      setTimeout(() => {
+        this.loading = false
+      }, 500)
     },
     commentDelete: function (commentId, index) {
       this.$confirm('此操作将删除此条内容, 是否继续?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'success' }).then(() => {
@@ -107,7 +139,7 @@ export default {
           message: '删除成功!'
         })
         this.$axios.delete('/tags/' + this.data.tag_id + '/posts/' + this.data.postId + '/comments/' + commentId).then((res) => {
-          this.postData.comments.splice(index, 1)
+          this.commentData.splice(index, 1)
         }).catch(function (err) {
           console.log(err)
         })
@@ -118,6 +150,61 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    DeleteReply: function (commentId, replyId, index) {
+      this.$confirm('此操作将删除此条回复, 是否继续?', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'success' }).then(() => {
+        this.$message({
+          showClose: true,
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.$axios.delete('/tags/' + this.data.tag_id + '/posts/' + this.data.postId + '/comments/' + commentId + '/replies/' + replyId).then((res) => {
+          this.commentData.forEach(e => {
+            if (e.id === commentId) {
+              e.replies.splice(index, 1)
+            }
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    CreateReply: function (commentId) {
+      this.$prompt('请输入回复信息', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      }).then(({value}) => {
+        this.$message({
+          type: 'success',
+          message: '回复成功！'
+        })
+        this.postReply.username = 'JETTY'
+        this.postReply.account = '13422496263@163.com'
+        this.postReply.content = value
+        let params = this.postReply
+        this.$axios.post('/tags/' + this.data.tag_id + '/posts/' + this.data.postId + '/comments/' + commentId + '/replies/', params).then((res) => {
+          this.commentData.forEach(e => {
+            if (e.id === commentId) {
+              e.replies.push(res.data[res.data.length - 1])
+            }
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
     }
   },
   filters: {
@@ -125,6 +212,9 @@ export default {
       time = new Date(time)
       return time.toLocaleString()
     }
+  },
+  computed: {
+
   }
 }
 </script>
@@ -142,6 +232,12 @@ export default {
     text-align: center;
     line-height: 36px;
     color: #fff;
+  }
+  .reply-button {
+    cursor: pointer;
+  }
+  .reply-button:hover {
+    background-color: #f56c6c;
   }
 </style>
 <style>
