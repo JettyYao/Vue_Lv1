@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogNewsVisible" @close="$emit('update:dialogNewsVisible', false)" custom-class="dialog-center dialog-new" width="50%" top="0">
+  <el-dialog :visible.sync="visible" @close="$emit('update:dialogNewsVisible', false)" custom-class="dialog-center dialog-new" width="50%" top="0">
     <span slot="title" class="dialog-title"><i class="fas fa-cube"/> News About StorageBox</span>
     <el-scrollbar style="height: 100%">
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo doloribus architecto, quas aliquam sapiente, voluptas, necessitatibus ad, mollitia distinctio magni eveniet aliquid iste quam laudantium? Error id dolor omnis consequuntur!</p>
@@ -40,6 +40,12 @@ export default {
   },
   data () {
     return {
+      visible: this.dialogNewsVisible
+    }
+  },
+  watch: {
+    dialogNewsVisible () {
+      this.visible = this.dialogNewsVisible
     }
   }
 }

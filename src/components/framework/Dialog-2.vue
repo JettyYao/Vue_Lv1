@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogAboutVisible" @close="$emit('update:dialogAboutVisible', false)" custom-class="dialog-center dialog-about" top="0" :fullscreen="true">
+  <el-dialog :visible.sync="visible" @close="$emit('update:dialogAboutVisible', false)" custom-class="dialog-center dialog-about" top="0" :fullscreen="true">
     <span slot="title" class="dialog-title"><i class="fas fa-cube"/> Message About StorageBox</span>
     <el-scrollbar style="height: 100%">
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo doloribus architecto, quas aliquam sapiente, voluptas, necessitatibus ad, mollitia distinctio magni eveniet aliquid iste quam laudantium? Error id dolor omnis consequuntur!</p>
@@ -39,7 +39,14 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+      visible: this.dialogAboutVisible
+    }
+  },
+  watch: {
+    dialogAboutVisible () {
+      this.visible = this.dialogAboutVisible
+    }
   }
 }
 </script>

@@ -51,7 +51,7 @@
                 </el-row>
             </div>
             <div class="admin-content">
-                <el-collapse v-model="activeNames" style="padding: 0 3px 20px;"> <!-- @change="handleChange" -->
+                <el-collapse v-model="activeNames" style="padding: 0 3px 20px;" accordion> <!-- @change="handleChange" -->
                     <el-collapse-item title="新闻 EveryDayNews" name="1">
                         <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
                         <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
@@ -95,9 +95,57 @@
                         </div>
                     </el-collapse-item>
                     <el-collapse-item title="邮件 VisitorEmails" name="4">
-                        <div>简化流程：设计简洁直观的操作流程；</div>
-                        <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-                        <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
+                      <el-table :data="EmailList" style="width: 100%">
+                        <el-table-column type="expand">
+                          <template slot-scope="props">
+                            <el-form label-position="left" inline class="demo-table-expand">
+                              <el-form-item label="邮件内容：">
+                                <span>{{ props.row.content }}</span>
+                              </el-form-item>
+                            </el-form>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="投件用户">
+                          <template slot-scope="scope">
+                            <i class="fas fa-user" style="color:#3c96f3"></i>
+                            <span style="margin-left: 5px;color:#3c96f3">{{ scope.row.username }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="用户邮箱" prop="account">
+                          <!-- <template slot-scope="scope">
+                            <i class="el-icon-time"></i>
+                            <span style="margin-left: 10px">{{ scope.row.account }}</span>
+                          </template> -->
+                        </el-table-column>
+                        <el-table-column label="接收时间">
+                          <template slot-scope="scope">
+                            <i class="el-icon-time"></i>
+                            <span style="margin-left: 5px">{{ scope.row.created_at | changeDate }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="邮件状态">
+                          <template slot-scope="scope">
+                            <el-tag size="medium" style="text-transform:uppercase">{{ scope.row.isread }}</el-tag>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="操作">
+                          <template slot-scope="scope">
+                            <el-button
+                            v-if="scope.row.isread"
+                              size="mini"
+                              :disabled = false
+                              @click="handleEdit(scope.$index, scope.row)">阅读</el-button>
+                              <el-button
+                              v-else
+                              size="mini"
+                              :disabled = true>已阅</el-button>
+                            <el-button
+                              size="mini"
+                              type="danger"
+                              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
                     </el-collapse-item>
                     <el-collapse-item title="评论 EveryComment" name="5">
                         <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
@@ -130,13 +178,19 @@ export default {
       inputValue: '',
       dialogPostCreate: false,
       dialogPostShow: false,
-      type: ''
+      type: '',
+      EmailList: []
     }
   },
   methods: {
-    getTag: function () {
+    getInit: function () {
       this.$axios.get('/tags').then((res) => {
         this.TagList = res.data
+      }).catch(function (err) {
+        console.log(err)
+      })
+      this.$axios.get('/emails').then((res) => {
+        this.EmailList = res.data
       }).catch(function (err) {
         console.log(err)
       })
@@ -258,7 +312,7 @@ export default {
     }
   },
   created () {
-    this.getTag()
+    this.getInit()
   }
 }
 </script>

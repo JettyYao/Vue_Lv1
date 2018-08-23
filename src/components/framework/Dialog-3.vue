@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogSignVisible" @close="$emit('update:dialogSignVisible', false)" custom-class="dialog-center dialog-login" width="40%" top="0" >
+  <el-dialog :visible.sync="visible" @close="$emit('update:dialogSignVisible', false)" custom-class="dialog-center dialog-login" width="40%" top="0" >
     <span slot="title" class="dialog-title">
         <i class="fas fa-cube" style="font-size:30px" />
         <h3 class="login-title">Welcome to StorageBox</h3>
@@ -39,7 +39,8 @@ export default {
         email: '',
         pass: '',
         checkPass: ''
-      }
+      },
+      visible: this.dialogSignVisible
     }
   },
   methods: {
@@ -55,6 +56,11 @@ export default {
     },
     resetForm () {
       this.ruleForm2 = {}
+    }
+  },
+  watch: {
+    dialogSignVisible () {
+      this.visible = this.dialogSignVisible
     }
   }
 }

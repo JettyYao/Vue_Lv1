@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="dialogPostCreate" @close="$emit('update:dialogPostCreate', false)" custom-class="dialog-center post-create" top="0" :fullscreen="true" v-loading="loading" element-loading-text="加载数据中" element-loading-background="rgba(0, 0, 0, .6)">
+    <el-dialog :visible.sync="visible" @close="$emit('update:dialogPostCreate', false)" custom-class="dialog-center post-create" top="0" :fullscreen="true" v-loading="loading" element-loading-text="加载数据中" element-loading-background="rgba(0, 0, 0, .6)">
       <div slot="title" style="color:#909399">
           <i class="fas fa-edit" /> Create a new Post —— {{data.tag_name}}
       </div>
@@ -42,7 +42,8 @@ export default {
       otherShow: false,
       isClick: false,
       sendData: {},
-      loading: false
+      loading: false,
+      visible: this.dialogPostCreate
     }
   },
   methods: {
@@ -102,6 +103,11 @@ export default {
     },
     SendData: function (send) {
       this.$emit('acceptData', send)
+    }
+  },
+  watch: {
+    dialogPostCreate () {
+      this.visible = this.dialogPostCreate
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogPostVisible" @close="$emit('update:dialogPostVisible', false);isClick=false" custom-class="dialog-center dialog-post" top="0" :fullscreen="true">
+  <el-dialog :visible.sync="visible" @close="$emit('update:dialogPostVisible', false);isClick=false" custom-class="dialog-center dialog-post" top="0" :fullscreen="true">
       <el-row :gutter="25">
           <div class="left-list"  @click="isCollapse == true ? isCollapse = false : isCollapse = true">
               <div>
@@ -155,10 +155,16 @@ export default {
       isClick: false,
       isComment: false,
       isCollapse: true,
-      form: {}
+      form: {},
+      visible: this.dialogPostVisible
     }
   },
   methods: {
+  },
+  watch: {
+    dialogPostVisible () {
+      this.visible = this.dialogPostVisible
+    }
   }
 }
 </script>

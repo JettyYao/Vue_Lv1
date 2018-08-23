@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="dialogPostShow" @close="$emit('update:dialogPostShow', false)" custom-class="dialog-center admin-post-show" top="0" :fullscreen="true"  v-loading="loading" element-loading-text="加载数据中">
+    <el-dialog :visible.sync="visible" @close="$emit('update:dialogPostShow', false)" custom-class="dialog-center admin-post-show" top="0" :fullscreen="true"  v-loading="loading" element-loading-text="加载数据中">
       <div slot="title" style="color:#909399">
           <i class="fas fa-book-open" style="color: #409EFF" /> <strong style="color: #409EFF">Look</strong> <strong>{{data.title}}</strong>
       </div>
@@ -94,10 +94,12 @@ export default {
   name: 'Dialog-7',
   props: {
     dialogPostShow: {
-      type: Boolean
+      type: Boolean,
+      require: true
     },
     data: {
-      type: Array
+      type: Array,
+      require: true
     }
   },
   data () {
@@ -107,7 +109,8 @@ export default {
       commentData: [],
       postReply: {},
       imgAdd: '',
-      loading: false
+      loading: false,
+      visible: this.dialogPostShow
     }
   },
   methods: {
@@ -213,8 +216,10 @@ export default {
       return time.toLocaleString()
     }
   },
-  computed: {
-
+  watch: {
+    dialogPostShow () {
+      this.visible = this.dialogPostShow
+    }
   }
 }
 </script>

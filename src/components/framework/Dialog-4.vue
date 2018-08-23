@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogMessageVisible" @close="$emit('update:dialogMessageVisible', false)" custom-class="dialog-center dialog-login" width="40%" top="0" >
+  <el-dialog :visible.sync="visible" @close="$emit('update:dialogMessageVisible', false)" custom-class="dialog-center dialog-login" width="40%" top="0" >
     <span slot="title" class="dialog-title">
         <i class="fas fa-cube"/>
         <h3 class="login-title">Email to StorageBox</h3>
@@ -43,7 +43,8 @@ export default {
         email: '',
         pass: '',
         checkPass: ''
-      }
+      },
+      visible: this.dialogMessageVisible
     }
   },
   methods: {
@@ -59,6 +60,11 @@ export default {
     },
     resetForm () {
       this.ruleForm2 = {}
+    }
+  },
+  watch: {
+    dialogMessageVisible () {
+      this.visible = this.dialogMessageVisible
     }
   }
 }
