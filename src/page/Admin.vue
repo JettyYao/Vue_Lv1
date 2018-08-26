@@ -17,7 +17,7 @@
                         <div class="admin-intro">
                             <el-row>
                                 <el-col :span=4>My Introduce <br><i class="fas fa-level-up-alt intro-icon"></i></el-col>
-                                <el-col :span=20>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Et ipsam, quod quasi eveniet molestias quis repudiandae voluptatibus temporibus esse. Sed praesentium qui aliquid corporis nemo aliquam tenetur, necessitatibus voluptate vitae?</el-col>
+                                <el-col :span=20 class="limitWord">{{About.oriContent}}</el-col>
                             </el-row>
                         </div>
                         <div class="admin-tags">
@@ -52,9 +52,15 @@
             </div>
             <div class="admin-content">
                 <el-collapse v-model="activeNames" style="padding: 0 3px 20px;" accordion> <!-- @change="handleChange" -->
-                    <el-collapse-item title="新闻 EveryDayNews" name="1">
-                        <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-                        <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+                    <el-collapse-item title="每日新闻 EveryDayNews" name="1">
+                        <div>
+                          <el-button size="mini" type="primary" @click="createOrUpdateNew()">Create</el-button>
+                          <el-button size="mini" type="primary"  @click="createOrUpdateNew(New.id)">Update</el-button>
+                          <el-button size="mini" type="danger" @click="deleteNew(New.id)">Delete</el-button>
+                        </div>
+                        <div class="newBox">
+                          <p v-html="New.content"></p>
+                        </div>
                     </el-collapse-item>
                     <el-collapse-item title="用户 EveryVisitors" name="2">
                         <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
@@ -125,31 +131,25 @@
                         </el-table-column>
                         <el-table-column label="邮件状态">
                           <template slot-scope="scope">
-                            <el-tag size="medium" style="text-transform:uppercase">{{ scope.row.isread }}</el-tag>
+                            <el-tag size="medium" style="text-transform:uppercase">{{ scope.row.isread | changeStatus }}</el-tag>
                           </template>
                         </el-table-column>
                         <el-table-column label="操作">
                           <template slot-scope="scope">
-                            <el-button
-                            v-if="scope.row.isread"
-                              size="mini"
-                              :disabled = false
-                              @click="handleEdit(scope.$index, scope.row)">阅读</el-button>
-                              <el-button
-                              v-else
-                              size="mini"
-                              :disabled = true>已阅</el-button>
-                            <el-button
-                              size="mini"
-                              type="danger"
-                              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                            <el-button size="mini" :disabled = scope.row.isread @click="handleRead(scope.row)">阅读</el-button>
+                            <el-button size="mini" type="danger" @click="emailDelete(scope.$index, scope.row)">删除</el-button>
                           </template>
                         </el-table-column>
                       </el-table>
                     </el-collapse-item>
-                    <el-collapse-item title="评论 EveryComment" name="5">
-                        <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-                        <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+                    <el-collapse-item title="关于我 AboutAuthor" name="5">
+                        <div>
+                          <el-button v-if="About.content != '<p>暂无数据</p>'" size="mini" type="primary"  @click="createOrUpdateAbout(About.id)">Update</el-button>
+                          <el-button v-else size="mini" type="primary" @click="createOrUpdateAbout()">Create</el-button>
+                        </div>
+                        <div class="newBox">
+                          <p v-html="About.content"></p>
+                        </div>
                     </el-collapse-item>
                 </el-collapse>
             </div>
@@ -158,26 +158,36 @@
     <div class="dialog">
          <Dialog6 :dialogPostCreate.sync="dialogPostCreate" :data="create_tag" v-on:acceptData="handleNewDate" ref="updatePost"></Dialog6>
          <Dialog7 :dialogPostShow.sync="dialogPostShow" :data="look_post" ref="postShow"></Dialog7>
+         <Dialog8 :dialogNew.sync="dialogNew" ref="NewShow" :data="new_id" v-on:acceptNew="handleNew"></Dialog8>
+         <Dialog9 :dialogAbout.sync="dialogAbout" ref="AboutShow" :data="about_id" v-on:acceptAbout="handleAbout"></Dialog9>
     </div>
   </el-scrollbar>
 </template>
 <script>
+import {markdown} from 'markdown'
 import Dialog6 from '../components/framework/Dialog-6'
 import Dialog7 from '../components/framework/Dialog-7'
-// import func from './vue-temp/vue-editor-bridge';
+import Dialog8 from '../components/framework/Dialog-8'
+import Dialog9 from '../components/framework/Dialog-9'
 export default {
   name: 'AdminControll',
-  components: {Dialog6, Dialog7},
+  components: {Dialog6, Dialog7, Dialog8, Dialog9},
   data () {
     return {
       activeNames: ['1'],
       TagList: [],
       create_tag: [],
       look_post: [],
+      new_id: '',
+      about_id: '',
+      New: {},
+      About: {},
       inputVisible: false,
       inputValue: '',
       dialogPostCreate: false,
       dialogPostShow: false,
+      dialogNew: false,
+      dialogAbout: false,
       type: '',
       EmailList: []
     }
@@ -191,6 +201,25 @@ export default {
       })
       this.$axios.get('/emails').then((res) => {
         this.EmailList = res.data
+      }).catch(function (err) {
+        console.log(err)
+      })
+      this.getLastNew()
+      this.getLastAbout()
+    },
+    getLastNew: function () {
+      this.$axios.get('/news').then((res) => {
+        this.New = res.data
+        this.New.content = markdown.toHTML(this.New.content)
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    getLastAbout: function () {
+      this.$axios.get('/abouts').then((res) => {
+        this.About = res.data
+        this.About.oriContent = res.data.content
+        this.About.content = markdown.toHTML(this.About.content)
       }).catch(function (err) {
         console.log(err)
       })
@@ -277,22 +306,24 @@ export default {
       })
     },
     handleDelete: function (tagIndex, postIndex, data) {
-      this.$axios.delete('/tags/' + data.tag_id + '/posts/' + data.id).then((res) => {
-        this.$confirm('此操作将永久删除该内容, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'error'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
+      this.$confirm('此操作将永久删除该内容, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.$axios.delete('/tags/' + data.tag_id + '/posts/' + data.id).then((res) => {
           this.TagList[tagIndex].posts.splice(postIndex, 1)
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         })
       })
     },
@@ -303,12 +334,95 @@ export default {
       this.look_post.tag_name = tagName
       this.dialogPostShow = true
       this.$refs.postShow.Init()
+    },
+    handleRead: function (data) {
+      data.isread = true
+      this.$axios.post('/eStatus/' + data.id).then((res) => {
+        this.$message({
+          message: 'Email has been reading !',
+          type: 'success'
+        })
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    emailDelete: function (index, data) {
+      this.$confirm('此操作将永久删除该邮件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.$axios.delete('/emails/' + data.id).then((res) => {
+          this.EmailList.splice(index, 1)
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    createOrUpdateNew: function (id) {
+      if (id) {
+        this.new_id = id.toString()
+        this.$refs.NewShow.Init()
+      }
+      this.dialogNew = true
+    },
+    handleNew: function (data) {
+      this.New = data
+      this.New.content = markdown.toHTML(this.New.content)
+    },
+    deleteNew: function (id) {
+      this.$confirm('此操作将永久删除该新闻, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.$axios.delete('/news/' + id).then((res) => {
+          this.getLastNew()
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    createOrUpdateAbout: function (id) {
+      if (id) {
+        this.about_id = id.toString()
+        this.$refs.AboutShow.Init()
+      }
+      this.dialogAbout = true
+    },
+    handleAbout: function (data) {
+      this.About = data
+      this.About.oriContent = data.content
+      console.log(this.About.oriContent)
+      this.About.content = markdown.toHTML(this.About.content)
     }
   },
   filters: {
     changeDate: function (time) {
       time = new Date(time)
       return time.toLocaleString()
+    },
+    changeStatus: function (status) {
+      status = status ? 'read' : 'inread'
+      return status
     }
   },
   created () {
@@ -368,6 +482,18 @@ export default {
 }
 .tag_show small:hover{
     color: #f56c6c;
+}
+.newBox{
+  padding: 10px 20px;
+  margin: 5px 0;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+}
+.limitWord{
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>
 <style>

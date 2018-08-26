@@ -42,7 +42,7 @@
                 <div>
                     <el-row style="padding: 10px 20px">
                         <el-col>内容正文：</el-col>
-                        <el-col><p style="word-wrap:break-word">{{postData.content}}</p></el-col>
+                        <el-col><p style="word-wrap:break-word" v-html="postData.content"></p></el-col>
                     </el-row>
                 </div>
             </el-collapse-item>
@@ -90,6 +90,7 @@
   </el-dialog>
 </template>
 <script>
+import {markdown} from 'markdown'
 export default {
   name: 'Dialog-7',
   props: {
@@ -121,6 +122,7 @@ export default {
       this.$axios.get('/tags/' + this.data.tag_id + '/posts/' + this.data.postId).then((res) => {
         this.postData = res.data
         this.imgAdd = require('../../assets/svg/' + this.data.tag_name.toLowerCase() + '1.svg')
+        this.postData.content = markdown.toHTML(this.postData.content)
       }).catch(function (err) {
         console.log(err)
       })
